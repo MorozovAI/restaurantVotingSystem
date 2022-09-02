@@ -81,7 +81,7 @@ public class MenuController {
         Dish dish = dishRepository.getExisted(dishId);
         assureMenuCanHaveDish(menu, dish);
         menu.getDishes().add(dish);
-        update(menu, menuId);
+        menuRepository.save(menu);
     }
 
     @PutMapping(value = "menus/{menuId}/dishes/remove/{dishId}")
@@ -92,7 +92,7 @@ public class MenuController {
         Dish dish = dishRepository.getExisted(dishId);
         if (!menu.getDishes().remove(dish))
             throw new IllegalRequestDataException("Menu " + menuId + " doesn't contain dish " + dishId);
-        update(menu, menuId);
+        menuRepository.save(menu);
     }
 
     @DeleteMapping("menus/{id}")

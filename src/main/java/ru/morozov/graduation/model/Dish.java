@@ -28,7 +28,6 @@ public class Dish extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
-    @NotNull
     @JsonIgnore
     private Restaurant restaurant;
 

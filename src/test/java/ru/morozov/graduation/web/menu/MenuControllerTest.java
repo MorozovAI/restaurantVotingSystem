@@ -191,7 +191,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void removeDish() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/remove/" + (DISH1_ID))
+        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/remove/" + DISH1_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(repository.getExisted(MENU1_ID).getDishes(), dishes3);

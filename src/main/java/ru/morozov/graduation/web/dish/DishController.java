@@ -14,6 +14,7 @@ import ru.morozov.graduation.repository.RestaurantRepository;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 import static ru.morozov.graduation.util.validation.ValidationUtil.checkNew;
 
@@ -36,13 +37,13 @@ public class DishController {
     }
 
     @GetMapping("dishes/{id}")
-    public Dish get(@PathVariable int id) {
+    public ResponseEntity<Dish> get(@PathVariable int id) {
         log.info("get dish {}", id);
-        return dishRepository.get(id);
+        return ResponseEntity.of(dishRepository.findById(id));
     }
 
     @GetMapping("{restaurantId}/dishes")
-    public List<Dish> getAllByRestaurant(@PathVariable int restaurantId) {
+    public Set<Dish> getAllByRestaurant(@PathVariable int restaurantId) {
         return dishRepository.getAllByRestaurant(restaurantId);
     }
 
@@ -63,6 +64,9 @@ public class DishController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("update dish {}", dish);
+        Dish preUpdated = dishRepository.getExisted(id);
+        dish.setId(id);
+        dish.setRestaurant(restaurantRepository.getExisted(preUpdated.id()));
         dishRepository.save(dish);
     }
 
