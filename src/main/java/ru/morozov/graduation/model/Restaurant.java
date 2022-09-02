@@ -29,7 +29,7 @@ public class Restaurant extends NamedEntity {
     private Set<Menu> menuSet;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("price DESC")
+    @OrderBy("price")
     @Schema(hidden = true)
     private Set<Dish> dishes = new HashSet<>();
 

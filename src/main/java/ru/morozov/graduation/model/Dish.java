@@ -21,13 +21,13 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Dish extends NamedEntity {
-    @Column(name = "price", nullable = false)
+    @Column(name = "price")
     @Range(min = 1, max = 10000)
     @JsonSerialize(using = JsonUtil.BigDecimalSerializer.class)
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_id")
     @NotNull
     @JsonIgnore
     private Restaurant restaurant;

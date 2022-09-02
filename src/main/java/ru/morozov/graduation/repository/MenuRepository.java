@@ -8,16 +8,17 @@ import ru.morozov.graduation.model.Menu;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static ru.morozov.graduation.util.validation.ValidationUtil.checkExisted;
 
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public interface MenuRepository extends BaseRepository<Menu>{
 
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1")
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 ORDER BY m.menuDate")
     List<Menu> getAll(int restaurantId);
 
     @EntityGraph(attributePaths = {"dishes","restaurant" }, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m  WHERE m.menuDate=?1 AND m.restaurant.id=?2")
-    Menu getByDate(LocalDate localDate, int restaurantId);
+    Optional<Menu> getByDate(LocalDate localDate, int restaurantId);
 }

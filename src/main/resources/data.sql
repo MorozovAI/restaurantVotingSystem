@@ -15,10 +15,11 @@ VALUES ('Столовая №1'),
        ('Чебургер');
 
 INSERT INTO menu (name, menu_date, restaurant_id)
-VALUES (CONCAT('Меню  на ', CURRENT_DATE), CURRENT_DATE, 1),
-       (CONCAT('Меню  на ', CURRENT_DATE), CURRENT_DATE, 2),
-       (CONCAT('Меню  на ', CURRENT_DATE), CURRENT_DATE, 3),
-       (CONCAT('Меню  на ', CURRENT_DATE), CURRENT_DATE, 4);
+VALUES (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 1),
+       (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 2),
+       (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 3),
+       (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 4),
+       (CONCAT('Меню на ', CURRENT_DATE-1), CURRENT_DATE - 1, 1);
 
 INSERT INTO dish (name, price, restaurant_id)
 VALUES ('Чай', 99.99, 1),

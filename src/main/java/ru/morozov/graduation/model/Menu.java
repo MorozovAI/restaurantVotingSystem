@@ -11,11 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "menu_unique_restaurant_id_name_idx")})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "menu_date"}, name = "menu_unique_restaurantId_menuDate_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Menu extends NamedEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -27,7 +26,7 @@ public class Menu extends NamedEntity {
     @Schema(hidden = true)
     private Set<Dish> dishes = new HashSet<>();
 
-    @Column(name = "menu_date", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
+    @Column(name = "menu_date")
     @NotNull
     private LocalDate menuDate;
 
@@ -46,5 +45,9 @@ public class Menu extends NamedEntity {
 
     public Menu(Integer id, String name, LocalDate menuDate) {
         this(id, name, menuDate, null, null);
+    }
+
+    public Menu(Menu menu) {
+        this(menu.id, menu.name, menu.menuDate, menu.getRestaurant(), menu.getDishes());
     }
 }
