@@ -1,21 +1,21 @@
 package ru.morozov.graduation.to;
 
 
+import lombok.*;
 import ru.morozov.graduation.model.Restaurant;
 
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
 public class VotingResultTo {
-    private final int restaurantId;
-    private final String restaurant;
-    private final Long votes;
+
+    private int restaurantId;
+    private String restaurant;
+    private Long votes;
 
     public VotingResultTo(Restaurant restaurant, Long votes) {
-        this.restaurantId = restaurant.id();
-        this.restaurant = restaurant.getName();
-        this.votes = votes;
-    }
-
-    public String getRestaurant() {
-        return restaurant;
+        this(restaurant.id(), restaurant.getName(), votes);
     }
 
     @Override
@@ -27,8 +27,6 @@ public class VotingResultTo {
                 '}';
     }
 
-    public Long getVotes() {
-        return votes;
-    }
+
 
 }

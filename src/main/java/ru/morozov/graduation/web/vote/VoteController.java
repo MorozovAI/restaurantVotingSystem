@@ -18,6 +18,8 @@ import ru.morozov.graduation.web.SecurityUtil;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,5 +67,5 @@ public class VoteController {
         log.info("delete vote {}", id);
         voteRepository.checkBelong(id, userId);
         voteRepository.delete(id);
-    }
+        }
 }

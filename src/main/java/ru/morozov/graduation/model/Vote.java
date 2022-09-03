@@ -16,23 +16,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Vote extends BaseEntity {
 
-    @Column(name = "vote_date", nullable = false)
+    @Column(name = "vote_date")
     @NotNull
     private LocalDate voteDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "user_id")
     @JsonIncludeProperties({"id", "name", "email"})
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "restaurant_id")
     @JsonIncludeProperties({"id", "name"})
     private Restaurant restaurant;
 
     public Vote(LocalDate voteDate) {
         this.voteDate = voteDate;
+    }
+
+    public Vote(Integer id, LocalDate voteDate, User user, Restaurant restaurant) {
+        super(id);
+        this.voteDate = voteDate;
+        this.user = user;
+        this.restaurant = restaurant;
     }
 }

@@ -11,6 +11,7 @@ import ru.morozov.graduation.to.VotingResultTo;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {

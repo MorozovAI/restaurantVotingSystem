@@ -22,10 +22,6 @@ public class RestaurantTestData {
     public static final Restaurant restaurant5 = new Restaurant(RESTAURANT1_ID + 4, "Чебургер");
     public static final List<Restaurant> restaurants = List.of(restaurant2, restaurant4, restaurant3, restaurant1, restaurant5);
 
-    static {
-        restaurant1.setMenuSet(menuSet1);
-    }
-
     public static Restaurant getNew() {
         return new Restaurant(null, "Новый ресторан");
     }

@@ -19,7 +19,7 @@ import static javax.persistence.CascadeType.REMOVE;
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurant_unique_name_idx")})
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Restaurant extends NamedEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
