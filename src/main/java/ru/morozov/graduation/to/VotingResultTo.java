@@ -26,6 +26,4 @@ public class VotingResultTo {
                 ", votes=" + votes +
                 '}';
     }
-
-
 }

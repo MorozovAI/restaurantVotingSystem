@@ -17,12 +17,12 @@ import ru.morozov.graduation.web.AbstractControllerTest;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.morozov.graduation.web.dish.DishTestData.*;
 import static ru.morozov.graduation.web.menu.MenuTestData.NOT_FOUND;
+import static ru.morozov.graduation.web.menu.MenuTestData.getUpdated;
 import static ru.morozov.graduation.web.menu.MenuTestData.*;
 import static ru.morozov.graduation.web.restaurant.RestaurantTestData.RESTAURANT1_ID;
 import static ru.morozov.graduation.web.user.UserTestData.ADMIN_MAIL;
@@ -77,7 +77,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Menu updated = MenuTestData.getUpdated();
+        Menu updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
@@ -146,29 +146,25 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
-    void updateDuplicate() {
+    void updateDuplicate() throws Exception {
         Menu invalid = new Menu(menu1.id(), menu5.getName(), menu5.getMenuDate());
-        assertThrows(Exception.class, () ->
-                perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.writeValue(invalid)))
-                        .andDo(print())
-                        .andExpect(status().isUnprocessableEntity())
-        );
+        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
-    void createDuplicate() {
+    void createDuplicate() throws Exception {
         Menu invalid = new Menu(null, "new menu", menu5.getMenuDate());
-        assertThrows(Exception.class, () ->
-                perform(MockMvcRequestBuilders.post(REST_URL2)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.writeValue(invalid)))
-                        .andDo(print())
-                        .andExpect(status().isUnprocessableEntity())
-        );
+        perform(MockMvcRequestBuilders.post(REST_URL2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -204,6 +200,5 @@ class MenuControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
-
     }
 }

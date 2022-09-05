@@ -19,7 +19,6 @@ import ru.morozov.graduation.web.AbstractControllerTest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -144,27 +143,24 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
-    void updateDuplicate() {
+    void updateDuplicate() throws Exception {
         Restaurant invalid = new Restaurant(RESTAURANT1_ID, restaurant2.getName());
-        assertThrows(Exception.class, () ->
-                perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.writeValue(invalid)))
-                        .andDo(print())
-        );
+        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
-    void createDuplicate() {
+    void createDuplicate() throws Exception {
         Restaurant invalid = new Restaurant(null, restaurant2.getName());
-        assertThrows(Exception.class, () ->
-                perform(MockMvcRequestBuilders.post(REST_URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.writeValue(invalid)))
-                        .andDo(print())
-                        .andExpect(status().isUnprocessableEntity())
-        );
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

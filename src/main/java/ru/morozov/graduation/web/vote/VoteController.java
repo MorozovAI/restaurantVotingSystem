@@ -19,7 +19,6 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,14 +49,15 @@ public class VoteController {
     }
 
     @PostMapping(value = "/restaurants/{restaurantId}")
-    public ResponseEntity<Vote> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restaurantId) {
-        Vote vote = voteRepository.getByVoteDate(LocalDate.now(), authUser.id());
-        Vote created = voteService.save(vote, authUser.id(), restaurantId);
-        log.info(vote == null ? "create" : "update" + " {} for restaurant {}", vote, restaurantId);
+    public ResponseEntity<Vote> createOrUpdate(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restaurantId) {
+        Optional<Vote> vote = voteRepository.getByVoteDate(LocalDate.now(), authUser.id());
+        boolean isNewVote = vote.isEmpty();
+        Vote saved = voteService.save(vote.orElse(null), authUser.id(), restaurantId);
+        log.info(isNewVote ? "create" : "update" + " {} for restaurant {}", vote, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(saved.getId()).toUri();
+        return new ResponseEntity<>(saved, isNewVote ? HttpStatus.CREATED : HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -66,6 +66,6 @@ public class VoteController {
         int userId = SecurityUtil.authId();
         log.info("delete vote {}", id);
         voteRepository.checkBelong(id, userId);
-        voteRepository.delete(id);
-        }
+        voteService.delete(id);
+    }
 }

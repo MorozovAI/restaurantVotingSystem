@@ -15,7 +15,6 @@ import ru.morozov.graduation.util.JsonUtil;
 import ru.morozov.graduation.web.AbstractControllerTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -120,11 +119,10 @@ class DishControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void updateDuplicate() throws Exception {
         Dish invalid = new Dish(null, dish2.getName(), 100);
-        assertThrows(Exception.class, () ->
-                perform(MockMvcRequestBuilders.put(REST_URL + DISH1_ID)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.writeValue(invalid)))
-                        .andDo(print())
-        );
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

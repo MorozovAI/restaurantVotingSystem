@@ -1,6 +1,7 @@
 package ru.morozov.graduation.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.model.Vote;
@@ -15,7 +16,6 @@ import static ru.morozov.graduation.util.validation.ValidationUtil.assureVoteCan
 
 @Service
 public class VoteService {
-
 
     @Value("${settings.vote changing end time}")
     private LocalTime changingEndTime;
@@ -35,7 +35,7 @@ public class VoteService {
     }
 
     @Transactional
-    public Vote save(Vote vote, int userId, int restaurantId) {
+    public Vote save(@Nullable Vote vote, int userId, int restaurantId) {
         if (vote == null) vote = new Vote(LocalDate.now());
         else assureVoteCanBeChanged(changingEndTime, EXCEPTION_TOO_LATE_CHANGE_VOTE);
         vote.setUser(userRepository.getExisted(userId));
@@ -43,5 +43,8 @@ public class VoteService {
         return voteRepository.save(vote);
     }
 
-
+    public void delete(int id) {
+        assureVoteCanBeChanged(changingEndTime, EXCEPTION_TOO_LATE_CHANGE_VOTE);
+        voteRepository.delete(id);
+    }
 }

@@ -71,9 +71,18 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void delete() throws Exception {
+        voteservice.setChangingEndTime(LocalTime.now().plusHours(1));
         perform(MockMvcRequestBuilders.delete(REST_URL + VOTE1_ID))
                 .andExpect(status().isNoContent());
         assertNull(voteRepository.get(VOTE1_ID));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void deleteAfterStop() throws Exception {
+        voteservice.setChangingEndTime(LocalTime.now().minusHours(1));
+        perform(MockMvcRequestBuilders.delete(REST_URL + VOTE1_ID))
+                .andExpect(status().isConflict());
     }
 
     @Test
