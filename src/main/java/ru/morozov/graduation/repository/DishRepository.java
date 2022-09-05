@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.model.Dish;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -24,4 +25,9 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Modifying
     @Query("DELETE FROM Dish d WHERE d.restaurant.id=:id ")
     int deleteByRestaurant_Id(int id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Dish d SET d.name=?2, d.price=?3 WHERE d.id=?1")
+    int update(int id, String name, BigDecimal price);
 }

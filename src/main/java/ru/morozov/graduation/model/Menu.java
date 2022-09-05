@@ -15,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class Menu extends NamedEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)

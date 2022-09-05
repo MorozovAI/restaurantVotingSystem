@@ -64,10 +64,7 @@ public class DishController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("update dish {}", dish);
-        Dish preUpdated = dishRepository.getExisted(id);
-        dish.setId(id);
-        dish.setRestaurant(restaurantRepository.getExisted(preUpdated.id()));
-        dishRepository.save(dish);
+        dishRepository.update(id, dish.getName(), dish.getPrice());
     }
 
     @DeleteMapping("dishes/{id}")
