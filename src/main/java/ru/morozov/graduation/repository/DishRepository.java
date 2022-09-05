@@ -24,7 +24,7 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Dish d WHERE d.restaurant.id=:id ")
-    int deleteByRestaurant_Id(int id);
+    void deleteByRestaurant_Id(int id);
 
     @Transactional
     @Modifying

@@ -6,8 +6,6 @@ import ru.morozov.graduation.web.MatcherFactory;
 
 import java.util.List;
 
-import static ru.morozov.graduation.web.menu.MenuTestData.menuSet1;
-
 public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuSet", "votes", "dishes");
     public static final MatcherFactory.Matcher<RestaurantTo> RESTAURANT_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(RestaurantTo.class, "todayMenu");

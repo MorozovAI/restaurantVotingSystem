@@ -2,10 +2,6 @@ package ru.morozov.graduation.to;
 
 import lombok.*;
 import ru.morozov.graduation.model.Menu;
-import ru.morozov.graduation.model.Restaurant;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Getter

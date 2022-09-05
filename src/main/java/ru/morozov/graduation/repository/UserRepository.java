@@ -1,6 +1,5 @@
 package ru.morozov.graduation.repository;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.model.User;

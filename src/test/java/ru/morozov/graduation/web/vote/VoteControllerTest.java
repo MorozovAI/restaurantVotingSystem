@@ -132,10 +132,10 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getResults() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL+"results"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "results"))
                 .andExpect(status().isOk())
                 .andDo(print())
-               // .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                // .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTING_RESULT_TO_MATCHER.contentJson(results1));
     }
 

@@ -2,13 +2,11 @@ package ru.morozov.graduation.to;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.hibernate.validator.constraints.Range;
 import ru.morozov.graduation.HasIdAndEmail;
 import ru.morozov.graduation.util.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Value

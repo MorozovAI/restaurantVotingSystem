@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "votes", "password");
 
@@ -23,16 +21,17 @@ public class UserTestData {
     public static final String ADMIN_MAIL = "admin@gmail.com";
     public static final String GUEST_MAIL = "guest@gmail.com";
     public static final String NEXT_USER_MAIL = "nextuser@gmail.com";
-    public static final User user = new User(USER_ID, "User", USER_MAIL, "password",  Role.USER);
+    public static final User user = new User(USER_ID, "User", USER_MAIL, "password", Role.USER);
     public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_MAIL, "admin", Role.ADMIN);
     public static final User guest = new User(GUEST_ID, "Guest", GUEST_MAIL, "guest");
     public static final User nextUser = new User(NEXT_USER_ID, "Next User", NEXT_USER_MAIL, "password");
-     public static User getNew() {
-        return new User(null, "New", "new@gmail.com", "newPass",  false, new Date(), Collections.singleton(Role.USER));
+
+    public static User getNew() {
+        return new User(null, "New", "new@gmail.com", "newPass", false, new Date(), Collections.singleton(Role.USER));
     }
 
     public static User getUpdated() {
-        return new User(USER_ID, "UpdatedName", USER_MAIL, "newPass",  false, new Date(), List.of(Role.ADMIN));
+        return new User(USER_ID, "UpdatedName", USER_MAIL, "newPass", false, new Date(), List.of(Role.ADMIN));
     }
 
     public static String jsonWithPassword(User user, String passw) {

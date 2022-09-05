@@ -11,7 +11,6 @@ import ru.morozov.graduation.to.VotingResultTo;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
@@ -20,7 +19,6 @@ public interface VoteRepository extends BaseRepository<Vote> {
             "    new ru.morozov.graduation.to.VotingResultTo(r, COUNT(v.restaurant.id) as cnt) " +
             "FROM " +
             "   Restaurant r LEFT JOIN Vote v ON r.id=v.restaurant.id " +
-          //  "WHERE v.voteDate=?1" +
             "GROUP BY " +
             " r " +
             "ORDER BY cnt DESC")
