@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,8 +73,7 @@ class VoteControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + VOTE1_ID))
                 .andExpect(status().isNoContent());
-        Optional<Vote> v = voteRepository.findById(VOTE1_ID);
-        assertFalse(voteRepository.get(VOTE1_ID) != null);
+        assertNull(voteRepository.get(VOTE1_ID));
     }
 
     @Test

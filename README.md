@@ -1,5 +1,4 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bee16f3145654047a0505c62aeefd8a2)](https://app.codacy.com/gh/MorozovAI/restaurantVotingSystem/dashboard)
-
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ec538362958c4392ba00f9f0e53d2a8b)](https://www.codacy.com/gh/MorozovAI/restaurantVotingSystem/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MorozovAI/restaurantVotingSystem&amp;utm_campaign=Badge_Grade)
 
 Technical requirement:
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.

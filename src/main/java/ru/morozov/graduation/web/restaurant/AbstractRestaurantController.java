@@ -38,7 +38,7 @@ public abstract class AbstractRestaurantController {
     @CacheEvict(allEntries = true)
     public void delete(int id) {
         log.info("delete restaurant {}", id);
-        dishRepository.deleteByRestaurant_Id(id);
+        dishRepository.deleteByRestaurantId(id);
         repository.deleteExisted(id);
     }
 
