@@ -2,6 +2,8 @@ package ru.morozov.graduation.web.menu;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import static ru.morozov.graduation.util.validation.ValidationUtil.checkNew;
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@CacheConfig(cacheNames = "restaurants")
 public class MenuController {
     static final String REST_URL = "/api/admin/restaurants";
 
@@ -52,6 +55,7 @@ public class MenuController {
     }
 
     @PostMapping(value = "/{restaurantId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu, @PathVariable int restaurantId) {
         checkNew(menu);
         log.info("create menu {}", menu);
@@ -66,6 +70,7 @@ public class MenuController {
 
     @PutMapping(value = "/menus/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Menu menu, @PathVariable int id) {
         log.info("update menu {}", menu);
         Menu preUpdated = menuRepository.getExisted(id);
@@ -75,6 +80,7 @@ public class MenuController {
 
     @PutMapping(value = "menus/{menuId}/dishes/add/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void addDish(@PathVariable int menuId, @PathVariable int dishId) {
         log.info("add dish {} to menu {}", dishId, menuId);
         Menu menu = menuRepository.getExisted(menuId);
@@ -86,6 +92,7 @@ public class MenuController {
 
     @PutMapping(value = "menus/{menuId}/dishes/remove/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void removeDish(@PathVariable int menuId, @PathVariable int dishId) {
         log.info("remove dish {} from menu {}", dishId, menuId);
         Menu menu = menuRepository.getExisted(menuId);
@@ -97,6 +104,7 @@ public class MenuController {
 
     @DeleteMapping("menus/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void delete(@PathVariable int id) {
         menuRepository.deleteExisted(id);
     }
