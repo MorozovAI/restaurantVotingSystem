@@ -22,6 +22,7 @@ VALUES (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 1),
        (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 4),
        (CONCAT('Меню на ', CURRENT_DATE - 1), CURRENT_DATE - 1, 1);
 
+
 INSERT INTO dish (name, price, restaurant_id)
 VALUES ('Чай', 99.99, 1),
        ('Кофе', 99.99, 1),

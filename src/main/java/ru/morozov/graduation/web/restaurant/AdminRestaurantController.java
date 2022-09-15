@@ -27,8 +27,8 @@ public class AdminRestaurantController extends AbstractRestaurantController {
 
     @Override
     @GetMapping("/{id}")
-    public RestaurantTo get(@PathVariable int id) {
-        return super.get(id);
+    public RestaurantTo getWithTodayMenu(@PathVariable int id) {
+        return super.getWithTodayMenu(id);
     }
 
     @Override
