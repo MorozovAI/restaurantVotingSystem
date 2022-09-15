@@ -38,7 +38,7 @@ public class Menu extends NamedEntity {
     @NotNull
     private LocalDate menuDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @Schema(hidden = true)
     private Restaurant restaurant;
