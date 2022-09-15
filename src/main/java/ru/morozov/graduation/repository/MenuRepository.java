@@ -11,14 +11,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 ORDER BY m.menuDate")
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 ORDER BY m.menuDate DESC")
     List<Menu> getAll(int restaurantId);
 
-    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT m FROM Menu m WHERE m.menuDate=CURRENT_DATE ORDER BY m.menuDate")
     List<Menu> getAllToday();
 
-    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.FETCH)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 AND m.menuDate=CURRENT_DATE ")
     Optional<Menu> getToday(int restaurantId);
 }

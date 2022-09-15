@@ -20,7 +20,7 @@ public class MenuTestData {
     public static final LocalDate menuDate = LocalDate.now();
     public static final Menu menu1 = new Menu(1, "Меню на " + menuDate, menuDate, restaurant1, dishes1);
     public static final Menu menu5 = new Menu(5, "Меню на " + menuDate.minusDays(1), menuDate.minusDays(1), restaurant1, dishes1);
-    public static final Set<Menu> menuSet1 = Stream.of(menu5, menu1).sorted(Comparator.comparing(Menu::getMenuDate)).collect(Collectors.toCollection(LinkedHashSet::new));
+    public static final Set<Menu> menuSet1 = Stream.of(menu1, menu5).sorted(Comparator.comparing(Menu::getMenuDate).reversed()).collect(Collectors.toCollection(LinkedHashSet::new));
 
     public static Menu getNew() {
         return new Menu(null, "Новое меню", menuDate.plusDays(1));

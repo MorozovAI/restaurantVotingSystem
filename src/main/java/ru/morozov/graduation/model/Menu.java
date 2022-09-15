@@ -1,6 +1,6 @@
 package ru.morozov.graduation.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,6 +31,7 @@ public class Menu extends NamedEntity {
     )
     @Schema(hidden = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIncludeProperties({"name", "price"})
     private Set<Dish> dishes = new HashSet<>();
 
     @Column(name = "menu_date")
@@ -39,7 +40,6 @@ public class Menu extends NamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference(value = "restaurant_menu")
     @Schema(hidden = true)
     private Restaurant restaurant;
 

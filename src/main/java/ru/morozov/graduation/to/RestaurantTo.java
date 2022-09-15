@@ -1,5 +1,6 @@
 package ru.morozov.graduation.to;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import ru.morozov.graduation.model.Menu;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RestaurantTo extends NamedTo {
 
+    @JsonIncludeProperties("dishes")
     private Menu todayMenu;
 
     public RestaurantTo(Integer id, String name, Menu todayMenu) {

@@ -1,6 +1,7 @@
 package ru.morozov.graduation.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,6 @@ public class Restaurant extends NamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("price")
     @Schema(hidden = true)
-   // @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Dish> dishes = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
