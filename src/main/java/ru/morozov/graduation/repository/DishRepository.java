@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+@Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
 
     @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)

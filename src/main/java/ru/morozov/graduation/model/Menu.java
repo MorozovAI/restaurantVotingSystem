@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,8 +29,8 @@ public class Menu extends NamedEntity {
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
-
     @Schema(hidden = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Dish> dishes = new HashSet<>();
 
     @Column(name = "menu_date")

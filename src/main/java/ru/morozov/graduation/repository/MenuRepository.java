@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+@Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 ORDER BY m.menuDate")
