@@ -27,7 +27,7 @@ public class Dish extends NamedEntity {
     @NotNull
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     @Schema(hidden = true)
     @NotNull

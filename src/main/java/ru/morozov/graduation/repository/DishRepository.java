@@ -18,7 +18,7 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d")
     List<Dish> getAll();
 
-    @Query("SELECT d FROM Dish d JOIN FETCH d.restaurant WHERE d.restaurant.id = ?1")
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = ?1")
     Set<Dish> getAllByRestaurant(int restaurantId);
 
     @Transactional
