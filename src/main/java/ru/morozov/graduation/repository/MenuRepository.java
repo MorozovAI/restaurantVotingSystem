@@ -2,11 +2,9 @@ package ru.morozov.graduation.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.model.Menu;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +15,10 @@ public interface MenuRepository extends BaseRepository<Menu> {
     List<Menu> getAll(int restaurantId);
 
     @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m  WHERE m.menuDate=?1 AND m.restaurant.id=?2")
-    Optional<Menu> getByDate(LocalDate localDate, int restaurantId);
+    @Query("SELECT m FROM Menu m WHERE m.menuDate=CURRENT_DATE ORDER BY m.menuDate")
+    List<Menu> getAllToday();
+
+    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 AND m.menuDate=CURRENT_DATE ")
+    Optional<Menu> getToday(int restaurantId);
 }

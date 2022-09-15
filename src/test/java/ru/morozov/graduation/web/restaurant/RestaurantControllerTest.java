@@ -99,7 +99,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getAll() throws Exception {
-        List<RestaurantTo> restaurantTos = RestaurantUtil.getTos(restaurants);
+        List<RestaurantTo> restaurantTos = RestaurantUtil.getTos(restaurants, null);
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andDo(print())

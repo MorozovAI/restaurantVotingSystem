@@ -19,8 +19,6 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.morozov.graduation.util.validation.ValidationUtil.assureIdConsistent;
-
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -51,8 +49,8 @@ public class VoteController {
 
     @PostMapping(value = "/restaurants/{restaurantId}")
     public ResponseEntity<Vote> create(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restaurantId) {
+        log.info("create vote for restaurant {}", restaurantId);
         Vote created = voteService.save(new Vote(LocalDate.now()), authUser.id(), restaurantId);
-        log.info("create {} for restaurant {}", created, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -62,6 +60,7 @@ public class VoteController {
     @PutMapping(value = "/restaurants/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable int restaurantId) {
+        log.info("update vote");
         voteService.update(restaurantId);
     }
 }

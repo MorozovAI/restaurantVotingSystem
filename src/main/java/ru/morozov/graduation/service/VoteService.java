@@ -1,12 +1,15 @@
 package ru.morozov.graduation.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.error.AppException;
+import ru.morozov.graduation.model.Restaurant;
 import ru.morozov.graduation.model.Vote;
 import ru.morozov.graduation.repository.RestaurantRepository;
 import ru.morozov.graduation.repository.VoteRepository;
@@ -26,6 +29,7 @@ public class VoteService {
     private LocalTime changingEndTime;
     private final VoteRepository voteRepository;
     private final RestaurantRepository restaurantRepository;
+    private final SessionFactory sessionFactory;
 
     public void setChangingEndTime(LocalTime changingEndTime) {
         this.changingEndTime = changingEndTime;
@@ -33,12 +37,15 @@ public class VoteService {
 
     @Transactional
     public Vote save(Vote vote, int userId, int restaurantId) {
+        Session session = sessionFactory.openSession();
         boolean isNewVote = voteRepository.getByVoteDate(LocalDate.now(), userId).isEmpty();
         if (isNewVote) {
             vote.setUser(SecurityUtil.authUser());
-            vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
+            vote.setRestaurant(session.load(Restaurant.class, restaurantId));
+            session.close();
         } else
             throw new AppException(HttpStatus.CONFLICT, "Vote is created already", ErrorAttributeOptions.of(MESSAGE));
+
         return voteRepository.save(vote);
     }
 

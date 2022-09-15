@@ -18,7 +18,6 @@ import ru.morozov.graduation.repository.RestaurantRepository;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 import static ru.morozov.graduation.util.validation.ValidationUtil.*;
@@ -50,7 +49,7 @@ public class MenuController {
     @GetMapping("restaurants/{restaurantId}/menu_on_today")
     public ResponseEntity<Menu> getTodayMenu(@PathVariable int restaurantId) {
         log.info("get today menu for restaurant {}", restaurantId);
-        return ResponseEntity.of(menuRepository.getByDate(LocalDate.now(), restaurantId));
+        return ResponseEntity.of(menuRepository.getToday(restaurantId));
     }
 
     @PostMapping(value = "restaurants/{restaurantId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)

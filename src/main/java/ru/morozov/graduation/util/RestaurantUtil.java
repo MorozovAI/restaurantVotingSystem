@@ -9,17 +9,17 @@ import java.util.stream.Collectors;
 
 public class RestaurantUtil {
 
-    public static List<RestaurantTo> getTos(List<Restaurant> restaurants) {
+    public static List<RestaurantTo> getTos(List<Restaurant> restaurants, List<Menu> todayMenus) {
         return restaurants.stream()
-                .map(RestaurantUtil::getTo)
+                .map(r -> getTo(r, todayMenus != null ? todayMenus.stream()
+                        .filter(m -> m.getRestaurant().id() == r.id())
+                        .findFirst()
+                        .orElse(null) : null))
                 .collect(Collectors.toList());
+
     }
 
-    public static RestaurantTo getTo(Restaurant r) {
-        Menu menu = r.getMenuSet() != null ? r.getMenuSet()
-                .stream()
-                .findFirst()
-                .orElse(null) : null;
-        return new RestaurantTo(r.id(), r.getName(), menu);
+    public static RestaurantTo getTo(Restaurant r, Menu todayMenu) {
+        return new RestaurantTo(r.id(), r.getName(), todayMenu);
     }
 }

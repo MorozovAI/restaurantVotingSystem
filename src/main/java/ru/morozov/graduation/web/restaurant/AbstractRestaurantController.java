@@ -15,7 +15,6 @@ import ru.morozov.graduation.repository.RestaurantRepository;
 import ru.morozov.graduation.to.RestaurantTo;
 import ru.morozov.graduation.util.RestaurantUtil;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static ru.morozov.graduation.util.validation.ValidationUtil.assureIdConsistent;
@@ -36,7 +35,8 @@ public abstract class AbstractRestaurantController {
     @Cacheable
     public RestaurantTo getWithTodayMenu(int id) {
         log.info("get restaurant {}", id);
-        return RestaurantUtil.getTo(repository.getExistedWithTodayMenu(id));
+        return RestaurantUtil.getTo(repository.getExistedWithTodayMenu(id),
+                menuRepository.getToday(id).orElse(null));
     }
 
     @Transactional
@@ -50,7 +50,8 @@ public abstract class AbstractRestaurantController {
     @Cacheable
     public List<RestaurantTo> getAll() {
         log.info("getAll restaurants with menu on today");
-        return RestaurantUtil.getTos(repository.getAllWithTodayMenu());
+        List<Menu> menu = menuRepository.getAllToday();
+        return RestaurantUtil.getTos(repository.findAll(), menu);
     }
 
     @CacheEvict(allEntries = true)
