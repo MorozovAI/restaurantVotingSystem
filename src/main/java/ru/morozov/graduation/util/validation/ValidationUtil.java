@@ -46,12 +46,12 @@ public class ValidationUtil {
         return obj;
     }
 
-    public static void assureVoteCanBeChanged(LocalTime changingEndTime, String message) {
+    public static void checkVoteCanBeChanged(LocalTime changingEndTime) {
         if (LocalTime.now().isAfter(changingEndTime))
-            throw new AppException(HttpStatus.CONFLICT, message, ErrorAttributeOptions.of(MESSAGE));
+            throw new AppException(HttpStatus.CONFLICT, "The vote cannot be changed. Too late.", ErrorAttributeOptions.of(MESSAGE));
     }
 
-    public static void assureMenuCanHaveDish(Menu menu, Dish dish) {
+    public static void checkMenuCanHaveDish(Menu menu, Dish dish) {
         if (menu.getRestaurant().id() != dish.getRestaurant().id()) {
             throw new IllegalRequestDataException("Dish with id=" + dish.id() + " can not be added to menu with id " + menu.id());
         }

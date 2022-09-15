@@ -52,4 +52,4 @@ server:
   port: 8080
 
 settings:
-  vote changing end time: "11:00"
+  vote-changing-end-time: "11:00"

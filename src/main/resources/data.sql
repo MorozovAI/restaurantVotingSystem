@@ -20,7 +20,7 @@ VALUES (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 1),
        (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 2),
        (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 3),
        (CONCAT('Меню на ', CURRENT_DATE), CURRENT_DATE, 4),
-       (CONCAT('Меню на ', CURRENT_DATE-1), CURRENT_DATE - 1, 1);
+       (CONCAT('Меню на ', CURRENT_DATE - 1), CURRENT_DATE - 1, 1);
 
 INSERT INTO dish (name, price, restaurant_id)
 VALUES ('Чай', 99.99, 1),
@@ -55,7 +55,10 @@ VALUES ('Чай', 99.99, 1),
        ('Беляш с картошкой', 399.99, 5);
 
 INSERT INTO vote (user_id, vote_date, restaurant_id)
-VALUES (1, NOW(), 2),
+VALUES (1, CURRENT_DATE - 1, 2),
+       (2, CURRENT_DATE - 1, 4),
+       (3, CURRENT_DATE - 1, 1),
+       (1, NOW(), 2),
        (2, NOW(), 4),
        (3, NOW(), 1);
 

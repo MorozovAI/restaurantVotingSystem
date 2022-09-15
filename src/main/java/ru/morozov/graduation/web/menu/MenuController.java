@@ -1,6 +1,6 @@
 package ru.morozov.graduation.web.menu;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,22 +21,21 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.morozov.graduation.util.validation.ValidationUtil.assureMenuCanHaveDish;
-import static ru.morozov.graduation.util.validation.ValidationUtil.checkNew;
+import static ru.morozov.graduation.util.validation.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @CacheConfig(cacheNames = "restaurants")
 public class MenuController {
-    static final String REST_URL = "/api/admin/restaurants";
+    static final String REST_URL = "/api/admin/";
 
     private final MenuRepository menuRepository;
     private final DishRepository dishRepository;
     private final RestaurantRepository restaurantRepository;
 
-    @GetMapping("/{restaurantId}/menus")
+    @GetMapping("restaurants/{restaurantId}/menus")
     public List<Menu> getAll(@PathVariable int restaurantId) {
         log.info("getAll menus for {}", restaurantId);
         return menuRepository.getAll(restaurantId);
@@ -48,13 +47,13 @@ public class MenuController {
         return ResponseEntity.of(menuRepository.findById(id));
     }
 
-    @GetMapping("/{restaurantId}/menu_on_today")
+    @GetMapping("restaurants/{restaurantId}/menu_on_today")
     public ResponseEntity<Menu> getTodayMenu(@PathVariable int restaurantId) {
         log.info("get today menu for restaurant {}", restaurantId);
         return ResponseEntity.of(menuRepository.getByDate(LocalDate.now(), restaurantId));
     }
 
-    @PostMapping(value = "/{restaurantId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "restaurants/{restaurantId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu, @PathVariable int restaurantId) {
         checkNew(menu);
@@ -63,7 +62,7 @@ public class MenuController {
         Menu created = menuRepository.save(menu);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(REST_URL + "menus/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
@@ -73,24 +72,25 @@ public class MenuController {
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Menu menu, @PathVariable int id) {
         log.info("update menu {}", menu);
+        assureIdConsistent(menu, id);
         Menu preUpdated = menuRepository.getExisted(id);
-        Menu updated = new Menu(id, menu.getName(), menu.getMenuDate(), preUpdated.getRestaurant(), preUpdated.getDishes());
+        Menu updated = new Menu(menu.id(), menu.getName(), menu.getMenuDate(), preUpdated.getRestaurant(), preUpdated.getDishes());
         menuRepository.save(updated);
     }
 
-    @PutMapping(value = "menus/{menuId}/dishes/add/{dishId}")
+    @PatchMapping(value = "menus/{menuId}/dishes/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void addDish(@PathVariable int menuId, @PathVariable int dishId) {
         log.info("add dish {} to menu {}", dishId, menuId);
         Menu menu = menuRepository.getExisted(menuId);
         Dish dish = dishRepository.getExisted(dishId);
-        assureMenuCanHaveDish(menu, dish);
+        checkMenuCanHaveDish(menu, dish);
         menu.getDishes().add(dish);
         menuRepository.save(menu);
     }
 
-    @PutMapping(value = "menus/{menuId}/dishes/remove/{dishId}")
+    @DeleteMapping(value = "menus/{menuId}/dishes/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void removeDish(@PathVariable int menuId, @PathVariable int dishId) {

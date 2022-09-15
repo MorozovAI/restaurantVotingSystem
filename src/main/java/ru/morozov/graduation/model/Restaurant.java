@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Restaurant extends NamedEntity {
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("menuDate")
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -28,6 +28,7 @@ public class Restaurant extends NamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("price")
     @Schema(hidden = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Dish> dishes = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
@@ -37,5 +38,13 @@ public class Restaurant extends NamedEntity {
 
     public Restaurant(Integer id, String name) {
         super(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

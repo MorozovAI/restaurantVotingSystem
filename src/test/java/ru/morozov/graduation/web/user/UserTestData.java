@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 public class UserTestData {
-    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "votes", "password");
+    public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "votes", "password", "roles");
 
     public static final int USER_ID = 1;
     public static final int ADMIN_ID = 2;
@@ -25,6 +25,7 @@ public class UserTestData {
     public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_MAIL, "admin", Role.ADMIN);
     public static final User guest = new User(GUEST_ID, "Guest", GUEST_MAIL, "guest");
     public static final User nextUser = new User(NEXT_USER_ID, "Next User", NEXT_USER_MAIL, "password");
+    public static final List<User> users = List.of(admin, guest, nextUser, user);
 
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", false, new Date(), Collections.singleton(Role.USER));

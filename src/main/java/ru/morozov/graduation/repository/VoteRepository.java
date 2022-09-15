@@ -19,6 +19,7 @@ public interface VoteRepository extends BaseRepository<Vote> {
             "    new ru.morozov.graduation.to.VotingResultTo(r, COUNT(v.restaurant.id) as cnt) " +
             "FROM " +
             "   Restaurant r LEFT JOIN Vote v ON r.id=v.restaurant.id " +
+            "WHERE v.voteDate= ?1 " +
             "GROUP BY " +
             " r " +
             "ORDER BY cnt DESC")
@@ -27,14 +28,16 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.voteDate=?1 AND v.user.id=?2")
     Optional<Vote> getByVoteDate(LocalDate date, int userId);
 
-    @EntityGraph(attributePaths = {"restaurant", "user"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT v FROM Vote v")
-    List<Vote> getAll();
-
-    @EntityGraph(attributePaths = {"restaurant", "user"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT v FROM Vote v WHERE v.id=?1 and v.user.id=?2")
     Optional<Vote> get(int id, int userId);
 
+    @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT v FROM Vote v WHERE v.user.id=?1 AND v.voteDate=CURRENT_DATE ")
+    Optional<Vote> getCurrentVote(int userId);
+
+
+    @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT v FROM Vote v WHERE v.user=?1")
     List<Vote> getAllByUser(User user);
 
     default Vote checkBelong(int id, int userId) {

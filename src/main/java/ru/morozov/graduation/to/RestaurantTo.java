@@ -1,11 +1,12 @@
 package ru.morozov.graduation.to;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import ru.morozov.graduation.model.Menu;
 
 @Data
-@Getter
-@Setter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RestaurantTo extends NamedTo {
@@ -15,5 +16,14 @@ public class RestaurantTo extends NamedTo {
     public RestaurantTo(Integer id, String name, Menu todayMenu) {
         super(id, name);
         this.todayMenu = todayMenu;
+    }
+
+    @Override
+    public String toString() {
+        return "RestaurantTo{" +
+                "todayMenu=" + todayMenu +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

@@ -30,7 +30,7 @@ import static ru.morozov.graduation.web.user.UserTestData.ADMIN_MAIL;
 class MenuControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MenuController.REST_URL + "/menus/";
-    private static final String REST_URL2 = MenuController.REST_URL + "/" + RESTAURANT1_ID + "/menus";
+    private static final String REST_URL2 = MenuController.REST_URL + "restaurants/" + RESTAURANT1_ID + "/menus";
 
     @Autowired
     private MenuRepository repository;
@@ -170,7 +170,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void addDish() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/add/" + (DISH1_ID + 1))
+        perform(MockMvcRequestBuilders.patch(REST_URL + MENU1_ID + "/dishes/" + (DISH1_ID + 1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(repository.getExisted(MENU1_ID).getDishes(), dishes2);
@@ -179,7 +179,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void addWrongDish() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/add/" + NOT_FOUND)
+        perform(MockMvcRequestBuilders.patch(REST_URL + MENU1_ID + "/dishes/" + NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -187,7 +187,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void removeDish() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/remove/" + DISH1_ID)
+        perform(MockMvcRequestBuilders.delete(REST_URL + MENU1_ID + "/dishes/" + DISH1_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(repository.getExisted(MENU1_ID).getDishes(), dishes3);
@@ -196,7 +196,7 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void addDishFromOtherRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + MENU1_ID + "/dishes/add/" + (DISH1_ID + 6))
+        perform(MockMvcRequestBuilders.patch(REST_URL + MENU1_ID + "/dishes/" + (DISH1_ID + 6))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

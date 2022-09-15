@@ -10,12 +10,13 @@ import org.hibernate.validator.constraints.Range;
 import ru.morozov.graduation.util.JsonUtil;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "dish_unique_restaurant_id_name_idx")})
+@Table(name = "dish")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,11 +24,13 @@ public class Dish extends NamedEntity {
     @Column(name = "price")
     @Range(min = 1, max = 10000)
     @JsonSerialize(using = JsonUtil.BigDecimalSerializer.class)
+    @NotNull
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
-    @JsonIgnore
+    @Schema(hidden = true)
+    @NotNull
     private Restaurant restaurant;
 
     @ManyToMany
@@ -38,5 +41,19 @@ public class Dish extends NamedEntity {
     public Dish(Integer id, String name, double price) {
         super(id, name);
         this.price = BigDecimal.valueOf(price);
+    }
+
+    public Dish(Integer id, String name, double price, Restaurant restaurant) {
+        this(id, name, price);
+        this.restaurant = restaurant;
+    }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "price=" + price +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

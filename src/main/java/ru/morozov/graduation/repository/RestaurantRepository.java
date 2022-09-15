@@ -11,6 +11,6 @@ import java.util.List;
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     @EntityGraph(attributePaths = {"menuSet"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT r FROM Restaurant r ORDER BY r.name")
+    @Query("SELECT r FROM Restaurant r LEFT JOIN  Menu m ON r.id = m.restaurant.id ORDER BY r.name")
     List<Restaurant> getAllWithMenu();
 }

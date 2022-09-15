@@ -6,6 +6,7 @@ import ru.morozov.graduation.web.MatcherFactory;
 import java.util.List;
 import java.util.Set;
 
+import static ru.morozov.graduation.web.restaurant.RestaurantTestData.restaurant1;
 import static ru.morozov.graduation.web.restaurant.RestaurantTestData.restaurant2;
 
 public class DishTestData {
@@ -30,7 +31,7 @@ public class DishTestData {
     }
 
     public static Dish getNew() {
-        return new Dish(null, "Новое блюдо", 99.98);
+        return new Dish(null, "Новое блюдо", 99.98, restaurant1);
     }
 
     public static Dish getUpdated() {

@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static ru.morozov.graduation.util.validation.ValidationUtil.assureIdConsistent;
+
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController extends AbstractRestaurantController {
@@ -49,6 +51,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
+        assureIdConsistent(restaurant, id);
         super.update(restaurant, id);
     }
 }

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,10 +23,12 @@ public class Menu extends NamedEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "dish_menu",
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"},
+                    name = "dish_menu_unique_idx")},
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")
     )
-    @OrderBy("price DESC")
+
     @Schema(hidden = true)
     private Set<Dish> dishes = new HashSet<>();
 
@@ -33,7 +36,7 @@ public class Menu extends NamedEntity {
     @NotNull
     private LocalDate menuDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonBackReference(value = "restaurant_menu")
     @Schema(hidden = true)
@@ -52,5 +55,14 @@ public class Menu extends NamedEntity {
 
     public Menu(Menu menu) {
         this(menu.id, menu.name, menu.menuDate, menu.getRestaurant(), menu.getDishes());
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "menuDate=" + menuDate +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }
