@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.morozov.graduation.error.AppException;
 import ru.morozov.graduation.model.Vote;
 import ru.morozov.graduation.repository.RestaurantRepository;
-import ru.morozov.graduation.repository.UserRepository;
 import ru.morozov.graduation.repository.VoteRepository;
 import ru.morozov.graduation.web.SecurityUtil;
 
@@ -26,7 +25,6 @@ public class VoteService {
     @Value("${settings.vote-changing-end-time}")
     private LocalTime changingEndTime;
     private final VoteRepository voteRepository;
-    private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     public void setChangingEndTime(LocalTime changingEndTime) {

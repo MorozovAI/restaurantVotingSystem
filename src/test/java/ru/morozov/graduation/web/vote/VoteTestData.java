@@ -15,12 +15,10 @@ public class VoteTestData {
     public static final MatcherFactory.Matcher<VotingResultTo> VOTING_RESULT_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(VotingResultTo.class);
 
     public static final int VOTE1_ID = 4;
-    public static final int VOTE2_ID = 5;
-    public static final int NOT_FOUND = 100;
     public static final Vote vote1 = new Vote(4, LocalDate.now(), user, restaurant2);
     public static final Vote vote2 = new Vote(2, LocalDate.now().minusDays(1), admin, restaurant4);
     public static final Vote vote3 = new Vote(5, LocalDate.now(), admin, restaurant4);
-    public static final List<Vote> adminVotes = List.of(vote2,vote3);
+    public static final List<Vote> adminVotes = List.of(vote2, vote3);
 
     public static final List<VotingResultTo> results1 = List.of(new VotingResultTo(restaurant1, 1L), new VotingResultTo(restaurant2, 1L),
             new VotingResultTo(restaurant4, 1L));
