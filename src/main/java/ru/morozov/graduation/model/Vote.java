@@ -20,7 +20,7 @@ public class Vote extends BaseEntity {
     @NotNull
     private LocalDate voteDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIncludeProperties({"id", "name", "email"})
     @NotNull
